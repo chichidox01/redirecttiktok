@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Redirecting… (Safe)</title>
+  <!--
+    Safe minimal redirect page.
+    - Replace TARGET_URL with the destination URL.
+    - Change DELAY_MS to required delay in milliseconds.
+    Security notes:
+    - This page validates the URL and blocks non-http(s) schemes (e.g. javascript:).
+    - Uses location.replace() so the redirect doesn't create an extra history entry.
+    - No external scripts, trackers, or inline eval/obfuscation.
+  -->
+  <style>
+    html,body{height:100%;margin:0;font-family:system-ui,Segoe UI,Roboto,Arial}
+    .wrap{min-height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;background:#f7f7f8;color:#222}
+    .logo{width:140px;height:140px;border-radius:10px;background:linear-gradient(135deg,#eef,#cce);display:flex;align-items:center;justify-content:center;font-weight:700}
+    .msg{margin-top:18px;font-size:18px}
+    .count{margin-top:8px;color:#555}
+    a.direct{margin-top:12px;display:inline-block}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="logo">The Forge Script</div>
+    <div class="msg">You will be redirected shortly.</div>
+    <div class="count">Redirecting in <span id="secs">3</span> seconds…</div>
+    <a id="fallback" class="direct" href="#" rel="nofollow noopener noreferrer">Open link now</a>
+  </div>
+
+  <script>
+    (function(){
+      'use strict';
+
+      // CONFIG — change these values safely
+      var TARGET_URL = 'https://www.rbscript.xyz'; // <-- replace with the destination URL
+      var DELAY_MS = 3000; // milliseconds to wait before redirect (3000 = 3 seconds)
+
+      // Utility: validate that the URL is http(s)
+      function isValidHttpUrl(string) {
+        try {
+          var u = new URL(string);
+          return (u.protocol === 'http:' || u.protocol === 'https:');
+        } catch (e) {
+          return false;
+        }
+      }
+
+      // Safe redirect function — uses location.replace() so user can't go "back" to this page
+      function safeRedirect(url) {
+        try {
+          // Extra safety: prevent javascript: or data: schemes
+          if (!isValidHttpUrl(url)) {
+            console.warn('Blocked unsafe redirect to:', url);
+            return;
+          }
+
+          var ua = navigator.userAgent || '';
+
+          if (/android/i.test(ua)) {
+            // Construct an intent only for https/http schemes and when Chrome supports it.
+            try {
+              var parsed = new URL(url);
+              var hostAndPath = parsed.host + parsed.pathname + parsed.search + parsed.hash;
+              var scheme = parsed.protocol.replace(':','');
+              // Build a proper intent URL that targets Chrome. If Chrome isn't installed, intent may fall back.
+              var intentUrl = 'intent://' + hostAndPath + '#Intent;scheme=' + scheme + ';package=com.android.chrome;end;';
+              location.replace(intentUrl);
+              return;
+            } catch (e) {
+              // fallback to normal redirect
+              console.warn('Failed to build intent URL, falling back:', e);
+            }
+          }
+
+          // Default for iOS/desktop and Android fallback
+          location.replace(url);
+        } catch (err) {
+          console.error('Redirect failed:', err);
+        }
+      }
+
+      // Hook up fallback link and countdown
+      var fallback = document.getElementById('fallback');
+      var secsSpan = document.getElementById('secs');
+
+      if (!isValidHttpUrl(TARGET_URL)) {
+        // If target is invalid, show safe message and disable auto-redirect
+        secsSpan.textContent = '—';
+        fallback.textContent = 'Link is invalid';
+        fallback.removeAttribute('href');
+        return;
+      }
+
+      fallback.href = TARGET_URL;
+      fallback.setAttribute('rel','nofollow noopener noreferrer');
+
+      // countdown for visual feedback
+      var remaining = Math.max(1, Math.round(DELAY_MS/1000));
+      secsSpan.textContent = remaining;
+      var iv = setInterval(function(){
+        remaining -= 1;
+        if (remaining <= 0) { clearInterval(iv); secsSpan.textContent = '0'; }
+        else secsSpan.textContent = remaining;
+      }, 1000);
+
+      // perform redirect after DELAY_MS
+      setTimeout(function(){ safeRedirect(TARGET_URL); }, DELAY_MS);
+
+    })();
+  </script>
+</body>
+</html>
