@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Forge Script - Redirecting</title>
+    <title>Download Script - Redirecting</title>
     <style>
         :root {
             --primary-color: #3b82f6;
@@ -58,13 +58,7 @@
             margin: 0 0 0.25rem 0; /* Small bottom margin to reduce space to logo */
         }
 
-        .logo-img {
-            width: 140px;
-            height: 140px;
-            margin-bottom: 0;
-            object-fit: contain;
-            border-radius: 16px;
-        }
+        /* Logo image removed as requested */
 
         .msg {
             font-size: 1.125rem;
@@ -104,7 +98,7 @@
             transform: translateY(0);
         }
 
-        /* SVG Fallback styling */
+        /* SVG Fallback styling - kept just in case but not used */
         .placeholder-svg {
             background: var(--primary-color);
             padding: 25px;
@@ -118,33 +112,24 @@
     <div class="wrap">
         <!-- Logo Section -->
         <div class="logo-container">
-            <h1 class="logo-title">The Forge Script</h1>
-            <img class="logo-img" id="main-logo" src="https://i.ibb.co/bRqscFvx/no-Filter.png" alt="The Forge Script Logo" onerror="handleImageError(this)">
+            <!-- Changed Title -->
+            <h1 class="logo-title">Download Script</h1>
+            <!-- Image Removed -->
         </div>
 
         <div class="msg">You will be redirected shortly.</div>
-        <div class="count">Redirecting in <span id="secs">3</span> seconds…</div>
+        <div class="count">Redirecting in <span id="secs">1</span> seconds…</div>
         
         <a id="fallback" class="direct" href="https://www.rbscript.xyz" rel="nofollow noopener noreferrer">Open link now</a>
     </div>
 
     <script>
-        // Placeholder image fallback logic
-        function handleImageError(img) {
-            img.style.display = 'none';
-            const container = img.parentElement;
-            const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-            svg.setAttribute("viewBox", "0 0 24 24");
-            svg.setAttribute("class", "logo-img placeholder-svg");
-            svg.innerHTML = '<path d="M20 2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>';
-            container.appendChild(svg); // Append at the end since title is first
-        }
-
         // Countdown and Redirection Logic
-        let seconds = 3;
+        let seconds = 1; // Start at 1 second
         const countdownElement = document.getElementById('secs');
         const fallbackLink = document.getElementById('fallback').href;
 
+        // Speed changed to 500ms (0.5s) to make it faster than 1 second
         const countdownInterval = setInterval(() => {
             seconds--;
             countdownElement.textContent = seconds;
@@ -153,7 +138,7 @@
                 clearInterval(countdownInterval);
                 window.location.href = fallbackLink;
             }
-        }, 1000);
+        }, 500); 
     </script>
 </body>
 </html>
