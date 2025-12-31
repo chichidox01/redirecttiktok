@@ -18,7 +18,6 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
 
-        /* Container bach l-GIF yban mzian */
         .content-wrapper {
             display: flex;
             flex-direction: column;
@@ -29,10 +28,10 @@
 
         .guide-gif {
             max-width: 100%;
-            max-height: 70vh; /* Nqessna chwiya bash yban text ta7t */
+            max-height: 65vh;
             width: auto;
             border-radius: 12px;
-            box-shadow: 0 0 25px rgba(59, 130, 246, 0.3); /* Blue glow */
+            box-shadow: 0 0 25px rgba(59, 130, 246, 0.3);
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
@@ -57,8 +56,8 @@
 <body>
     
     <div class="content-wrapper">
-        <!-- GIF Guide -->
-        <img src="https://i.ibb.co/hJ5RSZZy/tiktokredirect-ezgif-com-video-to-gif-converter.gif" alt="Open in Browser Guide" class="guide-gif">
+        <!-- GIF Image -->
+        <img id="guideGif" src="https://i.ibb.co/hJ5RSZZy/tiktokredirect-ezgif-com-video-to-gif-converter.gif" alt="Open in Browser Guide" class="guide-gif">
         
         <!-- Text Instructions -->
         <div class="instruction-text">
@@ -70,5 +69,16 @@
         </div>
     </div>
 
+    <script>
+        // Had script kay-force l-GIF y-t3awd kola 3.5 seconds
+        // Ila l-GIF mafihch "Loop" lrasso, had code ghaykhellih yt3awd
+        
+        setInterval(function() {
+            var img = document.getElementById('guideGif');
+            var src = "https://i.ibb.co/hJ5RSZZy/tiktokredirect-ezgif-com-video-to-gif-converter.gif";
+            // Zid timestamp bach l-browser y-shab lih tswira jdida o y-bdaha mn lowel
+            img.src = src + "?t=" + new Date().getTime();
+        }, 3500); // 3500ms = 3.5 seconds (Beddel had rqm 3la hsab tol dyal GIF)
+    </script>
 </body>
 </html>
