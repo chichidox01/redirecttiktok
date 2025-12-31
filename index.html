@@ -56,8 +56,8 @@
 <body>
     
     <div class="content-wrapper">
-        <!-- GIF Image -->
-        <img id="guideGif" src="https://i.ibb.co/hJ5RSZZy/tiktokredirect-ezgif-com-video-to-gif-converter.gif" alt="Open in Browser Guide" class="guide-gif">
+        <!-- GIF Image Local Path -->
+        <img id="guideGif" src="images/tiktokredirect.gif" alt="Open in Browser Guide" class="guide-gif">
         
         <!-- Text Instructions -->
         <div class="instruction-text">
@@ -70,15 +70,17 @@
     </div>
 
     <script>
-        // Had script kay-force l-GIF y-t3awd kola 3.5 seconds
-        // Ila l-GIF mafihch "Loop" lrasso, had code ghaykhellih yt3awd
+        // Script bach y-force l-GIF y-t3awd (Loop) kola 3.5 seconds
+        // Kaysta3mel l-path l-ma7alli (local)
         
         setInterval(function() {
             var img = document.getElementById('guideGif');
-            var src = "https://i.ibb.co/hJ5RSZZy/tiktokredirect-ezgif-com-video-to-gif-converter.gif";
-            // Zid timestamp bach l-browser y-shab lih tswira jdida o y-bdaha mn lowel
+            // Hna l-path dyal tswira f GitHub folder
+            var src = "images/tiktokredirect.gif";
+            
+            // Zid timestamp bach l-browser y-reloadi l-GIF
             img.src = src + "?t=" + new Date().getTime();
-        }, 3500); // 3500ms = 3.5 seconds (Beddel had rqm 3la hsab tol dyal GIF)
+        }, 3500); // 3500ms = 3.5 seconds
     </script>
 </body>
 </html>
