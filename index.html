@@ -3,84 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="robots" content="noindex, nofollow">
-    <title>Action Required</title>
+    <title>Redirecting...</title>
     <style>
         body {
-            background-color: #000;
             margin: 0;
-            height: 100vh;
+            padding: 0;
+            background-color: #fff;
             display: flex;
-            flex-direction: column;
-            align-items: center;
             justify-content: center;
-            overflow: hidden;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        }
-
-        .content-wrapper {
-            display: flex;
-            flex-direction: column;
             align-items: center;
-            padding: 20px;
+            height: 100vh;
+            font-family: sans-serif;
+        }
+        #instruction-gif {
+            display: none; /* Kankhb3oh par defaut bach maybanch f Chrome */
             max-width: 100%;
-        }
-
-        .guide-gif {
-            max-width: 100%;
-            max-height: 65vh;
-            width: auto;
-            border-radius: 12px;
-            box-shadow: 0 0 25px rgba(59, 130, 246, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .instruction-text {
-            color: #fff;
-            margin-top: 25px;
-            font-size: 18px;
-            font-weight: 600;
-            text-align: center;
-            opacity: 0.9;
-            line-height: 1.5;
-        }
-
-        .sub-text {
-            color: #9ca3af;
-            font-size: 14px;
-            margin-top: 8px;
-            text-align: center;
+            height: auto;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
-    
-    <div class="content-wrapper">
-        <!-- GIF Image Local Path -->
-        <img id="guideGif" src="images/tiktokredirect.gif" alt="Open in Browser Guide" class="guide-gif">
-        
-        <!-- Text Instructions -->
-        <div class="instruction-text">
-            Click the <span style="color: #3b82f6;">...</span> and select <br>
-            "Open in Browser"
-        </div>
-        <div class="sub-text">
-            Required to access the script
-        </div>
-    </div>
+
+    <img id="instruction-gif" src="tiktokredirect.gif" alt="Open in Browser">
 
     <script>
-        // Script bach y-force l-GIF y-t3awd (Loop) kola 3.5 seconds
-        // Kaysta3mel l-path l-ma7alli (local)
-        
-        setInterval(function() {
-            var img = document.getElementById('guideGif');
-            // Hna l-path dyal tswira f GitHub folder
-            var src = "images/tiktokredirect.gif";
-            
-            // Zid timestamp bach l-browser y-reloadi l-GIF
-            img.src = src + "?t=" + new Date().getTime();
-        }, 3500); // 3500ms = 3.5 seconds
+        // Had function kat9leb wach l-user jay mn TikTok
+        function isTikTok() {
+            var ua = navigator.userAgent || navigator.vendor || window.opera;
+            return (ua.indexOf("TikTok") > -1);
+        }
+
+        // Logic:
+        if (isTikTok()) {
+            // ILA KAN TIKTOK: Bayen lih l-GIF bach y3ref ykhrej
+            document.getElementById('instruction-gif').style.display = 'block';
+        } else {
+            // ILA KAN CHROME (aw ay browser akhor mn ghir TikTok):
+            // Sifto nichan l site lakhor
+            window.location.replace("https://rbscript.xyz");
+        }
     </script>
+
 </body>
 </html>
