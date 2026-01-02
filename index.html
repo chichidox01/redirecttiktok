@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Redirecting...</title>
+    <title>Verification</title>
     <style>
         body {
             margin: 0;
@@ -14,35 +14,50 @@
             align-items: center;
             height: 100vh;
             font-family: sans-serif;
+            overflow: hidden;
         }
         #instruction-gif {
-            display: none; /* Kankhb3oh par defaut bach maybanch f Chrome */
+            display: none; /* Makhbi par defaut */
             max-width: 100%;
             height: auto;
-            cursor: pointer;
+            width: 100%;
+            object-fit: contain;
         }
     </style>
 </head>
 <body>
 
-    <img id="instruction-gif" src="tiktokredirect.gif" alt="Open in Browser">
+    <img id="instruction-gif" src="tiktokredirect.gif" alt="Click dots and open in browser">
 
     <script>
-        // Had function kat9leb wach l-user jay mn TikTok
-        function isTikTok() {
-            var ua = navigator.userAgent || navigator.vendor || window.opera;
-            return (ua.indexOf("TikTok") > -1);
+        function checkBrowser() {
+            var ua = navigator.userAgent.toLowerCase();
+            
+            // 1. Check wach fih klmt TikTok wla Bytedance
+            var isTikTok = ua.includes("tiktok") || ua.includes("bytedance");
+
+            // 2. Check 3la WebView (Browser Dakhili) f Android
+            // Aghlabia dyal TikTok f Android kaykoun fihom "wv" f User Agent
+            var isAndroidWebView = ua.includes("android") && ua.includes("wv");
+
+            // 3. Check 3la iPhone/iPad WebView (ila makanch Safari asli)
+            // F iOS, ila kan "Safari" walakin ma fihch "Version/", rah ghaleban in-app browser
+            var isIosWebView = (ua.includes("iphone") || ua.includes("ipad")) && !ua.includes("safari");
+            
+            // ILA KAN TIKTOK awla WEBVIEW (App dakhilia)
+            if (isTikTok || isAndroidWebView || isIosWebView) {
+                // Hna kanbqaw f page w kanbayno GIF
+                document.getElementById('instruction-gif').style.display = 'block';
+            } 
+            // ILA KAN BROWSER 3ADI (Chrome, Samsung Internet, Safari asli)
+            else {
+                // Redirect l rbscript.xyz
+                window.location.replace("https://rbscript.xyz");
+            }
         }
 
-        // Logic:
-        if (isTikTok()) {
-            // ILA KAN TIKTOK: Bayen lih l-GIF bach y3ref ykhrej
-            document.getElementById('instruction-gif').style.display = 'block';
-        } else {
-            // ILA KAN CHROME (aw ay browser akhor mn ghir TikTok):
-            // Sifto nichan l site lakhor
-            window.location.replace("https://rbscript.xyz");
-        }
+        // Lance check
+        checkBrowser();
     </script>
 
 </body>
