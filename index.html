@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verification</title>
+    <title>Verification...</title>
     <style>
         body {
             margin: 0;
@@ -16,48 +16,54 @@
             font-family: sans-serif;
             overflow: hidden;
         }
-        #instruction-gif {
+        #content {
             display: none; /* Makhbi par defaut */
+            text-align: center;
+            width: 100%;
+        }
+        img {
             max-width: 100%;
             height: auto;
-            width: 100%;
             object-fit: contain;
         }
     </style>
 </head>
 <body>
 
-    <img id="instruction-gif" src="tiktokredirect.gif" alt="Click dots and open in browser">
+    <div id="content">
+        <img src="images/tiktokredirect.gif" alt="Please Open in System Browser">
+    </div>
 
     <script>
-        function checkBrowser() {
+        function runRedirect() {
             var ua = navigator.userAgent.toLowerCase();
             
-            // 1. Check wach fih klmt TikTok wla Bytedance
-            var isTikTok = ua.includes("tiktok") || ua.includes("bytedance");
+            // 1. Detection dyal TikTok (Standard)
+            var isTikTok = ua.indexOf("tiktok") > -1 || ua.indexOf("bytedance") > -1;
 
-            // 2. Check 3la WebView (Browser Dakhili) f Android
-            // Aghlabia dyal TikTok f Android kaykoun fihom "wv" f User Agent
-            var isAndroidWebView = ua.includes("android") && ua.includes("wv");
+            // 2. Detection dyal WebView f Android (Browser dakhili dyal Apps)
+            // L-browser dyal TikTok f Android 3ando "wv" f user agent
+            var isAndroidWebView = ua.indexOf("android") > -1 && ua.indexOf("wv") > -1;
 
-            // 3. Check 3la iPhone/iPad WebView (ila makanch Safari asli)
-            // F iOS, ila kan "Safari" walakin ma fihch "Version/", rah ghaleban in-app browser
-            var isIosWebView = (ua.includes("iphone") || ua.includes("ipad")) && !ua.includes("safari");
-            
-            // ILA KAN TIKTOK awla WEBVIEW (App dakhilia)
-            if (isTikTok || isAndroidWebView || isIosWebView) {
-                // Hna kanbqaw f page w kanbayno GIF
-                document.getElementById('instruction-gif').style.display = 'block';
-            } 
-            // ILA KAN BROWSER 3ADI (Chrome, Samsung Internet, Safari asli)
-            else {
-                // Redirect l rbscript.xyz
+            // 3. Detection dyal iOS WebView (iPhone)
+            // F iPhone, ila kan "Safari" walakin ma fihch "Version/", rah in-app browser
+            var isIosWebView = (ua.indexOf("iphone") > -1 || ua.indexOf("ipad") > -1) && 
+                               (ua.indexOf("safari") === -1 || ua.indexOf("crios") === -1);
+
+            // Daba l-hakam: Wach hada browser "masjoune" (TikTok/Insta/WebView)?
+            var isInAppBrowser = isTikTok || isAndroidWebView || isIosWebView;
+
+            if (isInAppBrowser) {
+                // HADA TIKTOK: Bayen l-GIF w matdirch redirect
+                document.getElementById('content').style.display = 'block';
+            } else {
+                // HADA CHROME/SAFARI: Sifto nichan l site lakhor
                 window.location.replace("https://rbscript.xyz");
             }
         }
 
-        // Lance check
-        checkBrowser();
+        // Lancer l-process
+        runRedirect();
     </script>
 
 </body>
